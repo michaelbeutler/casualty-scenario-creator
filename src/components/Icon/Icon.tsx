@@ -1,5 +1,4 @@
 import React from "react";
-import stc from "string-to-color";
 
 export type IconProps = {
   icon: string;
