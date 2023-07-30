@@ -10,14 +10,20 @@ const PreviewPage = async ({ params }: { params: { id: string } }) => {
   });
 
   if (!scenario) {
-    return <div>Scenario not found. <Skeleton className="h-12 w-14" /></div>;
+    return (
+      <div>
+        Scenario not found. <Skeleton className="h-12 w-14" />
+      </div>
+    );
   }
 
   return (
     <div className="flex flex-col px-24 items-center">
       <div className="mx-auto my-24 w-[148.5mm] h-[210mm] bg-white shadow-md flex flex-col px-[1cm] py-[1cm] items-center gap-4">
         <h1>{scenario?.title}</h1>
-        <Person annotations={scenario.annotations as any} />
+        <Person
+          annotations={scenario.annotations as { x: number; y: number }[]}
+        />
         <p>{scenario?.description}</p>
       </div>
       <div className="max-w-24">
