@@ -1,10 +1,7 @@
 "use client";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Toaster } from "@/components/ui/toaster";
-import { Disclosure } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Link from "next/link";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { usePathname } from "next/navigation";
 
 import "./globals.css";
@@ -124,6 +121,7 @@ export default function RootLayout({
           </div>
           <Toaster />
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

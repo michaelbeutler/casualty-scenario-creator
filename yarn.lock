@@ -298,7 +298,7 @@
   resolved "https://registry.yarnpkg.com/@nolyfill/is-core-module/-/is-core-module-1.0.39.tgz#3dc35ba0f1e66b403c00b39344f870298ebb1c8e"
   integrity sha512-nn5ozdjYQpUCZlWGuxcJY/KpxkWQs4DcbMCmKojjyrYDEAGy4Ce19NN4v5MduafTwJlbKc99UA8YhSVqq9yPZA==
 
-"@opentelemetry/api@1.4.1", "@opentelemetry/api@^1.4.1":
+"@opentelemetry/api@^1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.4.1.tgz#ff22eb2e5d476fbc2450a196e40dd243cc20c28f"
   integrity sha512-O2yRJce1GOc6PAy3QxFM4NzFiWzvScDC1/5ihYBL6BUEVdq0XMWN01sppE+H6bBXbaFYipjwFLEWLg5PaSOThA==
@@ -1528,6 +1528,11 @@
     "@opentelemetry/sdk-node" "^0.38.0"
     "@opentelemetry/sdk-trace-node" "^1.12.0"
     "@opentelemetry/semantic-conventions" "^1.12.0"
+
+"@vercel/speed-insights@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@vercel/speed-insights/-/speed-insights-1.2.0.tgz#1656c3596d4ec02d93d301ca45944c1b9b245186"
+  integrity sha512-y9GVzrUJ2xmgtQlzFP2KhVRoCglwfRQgjyfY607aU0hh0Un6d0OUyrJkjuAlsV18qR4zfoFPs/BiIj9YDS6Wzw==
 
 acorn-jsx@^5.3.2:
   version "5.3.2"
