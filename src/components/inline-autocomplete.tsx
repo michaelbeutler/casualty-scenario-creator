@@ -27,6 +27,7 @@ const InlineAutoComplete: React.FC<InlineAutoCompleteProps> = ({
   defaultValue,
   ...props
 }) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [internal, setInternal] = useState<string>(String(defaultValue || ""));
   const { complete, completion, isLoading, stop } = useCompletion({
     api: "/api/completion",
@@ -57,40 +58,50 @@ const InlineAutoComplete: React.FC<InlineAutoCompleteProps> = ({
     complete(e.target.value);
   }, 500);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (Object.values(KeyEnum).includes(e.key as KeyEnum)) {
-      e.preventDefault();
-    }
+  const acceptCompletion = () => {
+    if (!isLoading && !internal.includes(completion)) {
+      const newValue = internal + " " + completion;
+      if (textareaRef.current) {
+        // Manually update the textarea's value
+        textareaRef.current.value = newValue;
 
-    switch (e.key) {
-      case KeyEnum.TAB:
-        if (!isLoading && !internal.includes(completion)) {
-          if (onChange)
-            onChange({
-              ...e,
-              // target: Object.assign(e.target, {
-              //   value: e.currentTarget.value + " " + completion,
-              // }),
-              currentTarget: Object.assign(e.currentTarget, {
-                value: e.currentTarget.value + " " + completion,
-              }),
-            });
+        // Create a synthetic event to trigger the parent form's onChange
+        const event = new Event("change", { bubbles: true });
+        Object.defineProperty(event, "target", {
+          writable: false,
+          value: { value: newValue },
+        });
+        Object.defineProperty(event, "currentTarget", {
+          writable: false,
+          value: { value: newValue },
+        });
+
+        // Dispatch the event
+        if (onChange) {
+          onChange(event as any);
         }
-        break;
-      case KeyEnum.ESC:
-        stop();
-        break;
-      default:
-        break;
+        setInternal(newValue);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === KeyEnum.TAB) {
+      e.preventDefault();
+      acceptCompletion();
+    } else if (e.key === KeyEnum.ESC) {
+      e.preventDefault();
+      stop();
     }
   };
 
   return (
     <div className="relative">
       <Textarea
+        ref={textareaRef}
         rows={10}
         {...props}
-        className="relative z-10"
+        className="relative z-10 bg-transparent"
         onInput={(e) => {
           setInternal(e.currentTarget.value);
         }}
@@ -101,8 +112,11 @@ const InlineAutoComplete: React.FC<InlineAutoCompleteProps> = ({
           if (e.currentTarget.value.length > 4) handleInputChange(e);
         }}
       ></Textarea>
-      <div className="absolute top-0 flex text-gray-300 min-h-[60px] w-full rounded-md border border-transparent bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50">
-        {internal}{" "}
+      <div
+        className="absolute top-0 flex text-gray-300 min-h-[60px] w-full rounded-md border border-transparent bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+        onClick={acceptCompletion}
+      >
+        <span className="invisible">{internal} </span>
         {isLoading ? "Loading..." : completion.replaceAll("\n", "\n\n")}
       </div>
     </div>

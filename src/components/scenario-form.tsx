@@ -160,7 +160,12 @@ export const ScenarioForm: React.FC<{
     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
     const pdfBlob = pdf.output("blob");
     const pdfUrl = URL.createObjectURL(pdfBlob);
-    window.open(pdfUrl);
+    const link = document.createElement("a");
+    link.href = pdfUrl;
+    link.download = `${data.title}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     URL.revokeObjectURL(pdfUrl);
 
     document.body.removeChild(previewContainer);

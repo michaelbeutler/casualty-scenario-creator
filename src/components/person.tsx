@@ -18,7 +18,7 @@ const Person: React.FC<{
         version="1.1"
         preserveAspectRatio="xMidYMid meet"
         className="w-full h-full"
-        onClick={(e) => {
+        onPointerDown={(e) => {
           const rect = e.currentTarget.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = e.clientY - rect.top;
