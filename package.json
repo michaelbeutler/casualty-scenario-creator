@@ -61,7 +61,6 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "prisma": "^5.0.0",
     "ts-node": "^10.9.1"
   }
 }

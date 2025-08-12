@@ -22,7 +22,11 @@ import * as z from "zod";
 import Person from "./person";
 import InlineAutoComplete from "./inline-autocomplete";
 import { Switch } from "./ui/switch";
-import { useState } from "react";
+import React, { useState } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import PDFPreview from "./pdf-preview";
+import { createRoot } from "react-dom/client";
 
 const FormSchema = z.object({
   title: z
@@ -96,6 +100,62 @@ export const ScenarioForm: React.FC<{
       });
     }
   }
+
+  const handleDownload = async () => {
+    const data = form.getValues();
+    const selectedSymptoms = symptoms.filter((s) =>
+      data.symptoms.includes(s.id)
+    );
+    const selectedMechanism = mechanismOfInjury.find(
+      (m) => m.id === data.mechanismOfInjury
+    );
+
+    if (!selectedMechanism) {
+      toast({
+        title: "Mechanism of injury not selected",
+        description: "Please select a mechanism of injury to generate the PDF.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const previewContainer = document.createElement("div");
+    previewContainer.style.position = "absolute";
+    previewContainer.style.left = "-9999px";
+    document.body.appendChild(previewContainer);
+
+    const root = createRoot(previewContainer);
+    root.render(
+      <PDFPreview
+        title={data.title}
+        description={data.description}
+        symptoms={selectedSymptoms}
+        mechanismOfInjury={selectedMechanism}
+        annotations={data.annotations}
+      />
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const canvas = await html2canvas(
+      previewContainer.querySelector("#pdf-content") as HTMLElement
+    );
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a5",
+    });
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    const pdfBlob = pdf.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    window.open(pdfUrl);
+    URL.revokeObjectURL(pdfUrl);
+
+    document.body.removeChild(previewContainer);
+  };
 
   return (
     <Form {...form}>
@@ -214,7 +274,7 @@ export const ScenarioForm: React.FC<{
                           key={mechanism.id}
                         >
                           <FormControl>
-                            <RadioGroupItem value="all" />
+                            <RadioGroupItem value={mechanism.id} />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {mechanism.name}
@@ -244,13 +304,10 @@ export const ScenarioForm: React.FC<{
           />
         </div>
 
-        <Button>
+        <Button type="button" onClick={handleDownload}>
           <DownloadIcon className="mr-2 h-4 w-4" /> Download PDF
         </Button>
       </form>
     </Form>
   );
 };
-function html2canvas(input: HTMLElement | null) {
-  throw new Error("Function not implemented.");
-}

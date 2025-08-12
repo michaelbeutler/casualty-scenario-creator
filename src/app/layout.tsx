@@ -1,5 +1,6 @@
 "use client";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Toaster } from "@/components/ui/toaster";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -30,10 +31,15 @@ export default function RootLayout({
   const pathname = usePathname();
   return (
     <html lang="en" className="h-full w-full">
-      <body className="w-full h-full bg-gray-100">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <body className="w-full h-full">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           <div className="min-h-full">
-            <Disclosure as="nav" className="bg-white shadow-sm">
+            <Disclosure as="nav" className="bg-background shadow-sm">
               {({ open }) => (
                 <>
                   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -46,8 +52,8 @@ export default function RootLayout({
                               href={item.href}
                               className={classNames(
                                 pathname === item.href
-                                  ? "border-red-500 text-gray-900"
-                                  : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                                  ? "border-red-500 text-foreground"
+                                  : "border-transparent text-muted-foreground hover:border-gray-300 hover:text-foreground",
                                 "inline-flex items-center border-b-4 px-1 pt-1 text-sm font-medium"
                               )}
                               aria-current={
@@ -60,9 +66,13 @@ export default function RootLayout({
                         </div>
                       </div>
 
+                      <div className="flex items-center">
+                        <ThemeToggle />
+                      </div>
+
                       <div className="-mr-2 flex items-center sm:hidden">
                         {/* Mobile menu button */}
-                        <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                        <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                           <span className="absolute -inset-0.5" />
                           <span className="sr-only">Open main menu</span>
                           {open ? (
@@ -91,7 +101,7 @@ export default function RootLayout({
                           className={classNames(
                             pathname === item.href
                               ? "border-red-500 bg-red-50 text-red-700"
-                              : "border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800",
+                              : "border-transparent text-muted-foreground hover:border-gray-300 hover:bg-accent hover:text-foreground",
                             "block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
                           )}
                           aria-current={
