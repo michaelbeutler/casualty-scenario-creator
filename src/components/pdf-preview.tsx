@@ -1,18 +1,27 @@
 import React from "react";
-import { Symptom, MechanismOfInjury } from "@prisma/client";
 import Person from "./person";
+
+interface TCCCSymptom {
+  id: string;
+  name: string;
+}
+
+interface TCCCMechanismOfInjury {
+  id: string;
+  name: string;
+}
 
 interface PDFPreviewProps {
   title: string;
-  description: string;
-  symptoms: Symptom[];
-  mechanismOfInjury: MechanismOfInjury;
+  injuries: string;
+  symptoms: TCCCSymptom[];
+  mechanismOfInjury: TCCCMechanismOfInjury;
   annotations: { x: number; y: number }[];
 }
 
 const PDFPreview: React.FC<PDFPreviewProps> = ({
   title,
-  description,
+  injuries,
   symptoms,
   mechanismOfInjury,
   annotations,
@@ -22,17 +31,24 @@ const PDFPreview: React.FC<PDFPreviewProps> = ({
       id="pdf-content"
       className="w-[148mm] h-[210mm] p-4 bg-white text-black text-sm"
     >
-      <h1 className="text-xl font-bold mb-2">{title}</h1>
+      <h2 className="text-lg font-bold mb-2">{title}</h2>
+
       <div className="max-w-[350px] border-2 border-gray-500 p-4 flex justify-center mb-4">
         <Person annotations={annotations} />
       </div>
-      <p className="mb-2">{description}</p>
-      <div className="flex flex-row gap-2">
+
+      <div className="grid grid-cols-1 gap-4">
         <div>
-          <b>MOI: </b> {mechanismOfInjury.name}
+          <h3 className="font-bold text-md mb-1">M - Mechanism of Injury</h3>
+          <p className="pl-2">{mechanismOfInjury.name}</p>
         </div>
         <div>
-          <b>Symptoms: </b> {symptoms.map((s) => s.name).join(", ")}
+          <h3 className="font-bold text-md mb-1">I - Injuries</h3>
+          <p className="pl-2">{injuries}</p>
+        </div>
+        <div>
+          <h3 className="font-bold text-md mb-1">S - Signs and Symptoms</h3>
+          <p className="pl-2">{symptoms.map((s) => s.name).join(", ")}</p>
         </div>
       </div>
     </div>

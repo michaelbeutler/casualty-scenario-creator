@@ -23,36 +23,20 @@ const HomePage = async () => {
           <CardContent>
             <ScenarioForm
               symptoms={[
-                {
-                  id: "1",
-                  name: "Headache",
-                  description: "Pain in the head",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-                {
-                  id: "2",
-                  name: "Nausea",
-                  description: "Feeling of sickness",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
+                { id: "1", name: "Bewusstlosigkeit" },
+                { id: "2", name: "Starke Blutung" },
+                { id: "3", name: "Offene Fraktur" },
+                { id: "4", name: "Atemnot" },
+                { id: "5", name: "Schockzeichen" },
+                { id: "6", name: "Verbrennungen" },
+                { id: "7", name: "Penetrierende Thoraxverletzung" },
+                { id: "8", name: "Schädel-Hirn-Trauma" },
               ]}
               mechanismOfInjury={[
-                {
-                  id: "1",
-                  name: "Fall",
-                  description: "Injury from falling",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
-                {
-                  id: "2",
-                  name: "Collision",
-                  description: "Injury from collision",
-                  createdAt: new Date(),
-                  updatedAt: new Date(),
-                },
+                { id: "1", name: "Schussverletzung" },
+                { id: "2", name: "Explosionsverletzung" },
+                { id: "3", name: "Stumpfes Trauma" },
+                { id: "4", name: "Verkehrsunfall" },
               ]}
             />
           </CardContent>

@@ -15,7 +15,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MechanismOfInjury, Symptom } from "@prisma/client";
 import { DownloadIcon } from "@radix-ui/react-icons";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -37,7 +36,7 @@ const FormSchema = z.object({
     .max(35, {
       message: "Title must be at most 20 characters.",
     }),
-  description: z
+  injuries: z
     .string()
     .min(20, {
       message: "Description must be at least 20 characters.",
@@ -61,16 +60,26 @@ const FormSchema = z.object({
     }),
 });
 
+interface TCCCSymptom {
+  id: string;
+  name: string;
+}
+
+interface TCCCMechanismOfInjury {
+  id: string;
+  name: string;
+}
+
 export const ScenarioForm: React.FC<{
-  symptoms: Symptom[];
-  mechanismOfInjury: MechanismOfInjury[];
+  symptoms: TCCCSymptom[];
+  mechanismOfInjury: TCCCMechanismOfInjury[];
 }> = ({ symptoms, mechanismOfInjury }) => {
   const [enableAI, setEnableAI] = useState<boolean>(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       title: "",
-      description: "",
+      injuries: "",
       symptoms: [],
       mechanismOfInjury: "",
       annotations: [],
@@ -124,15 +133,15 @@ export const ScenarioForm: React.FC<{
     previewContainer.style.left = "-9999px";
     document.body.appendChild(previewContainer);
 
-    const root = createRoot(previewContainer);
+    const root = createRoot(previewContainer as HTMLElement);
     root.render(
       <PDFPreview
         title={data.title}
-        description={data.description}
+        injuries={data.injuries}
         symptoms={selectedSymptoms}
         mechanismOfInjury={selectedMechanism}
         annotations={data.annotations}
-      />
+      /> as any
     );
 
     await new Promise((resolve) => setTimeout(resolve, 500));
@@ -178,10 +187,10 @@ export const ScenarioForm: React.FC<{
 
             <FormField
               control={form.control}
-              name="description"
+              name="injuries"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Injuries</FormLabel>
                   <FormControl>
                     <>
                       {enableAI && <InlineAutoComplete {...field} />}

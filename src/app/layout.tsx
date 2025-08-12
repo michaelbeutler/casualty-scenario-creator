@@ -39,7 +39,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="min-h-full">
-            <Disclosure as="nav" className="bg-background shadow-sm">
+            {/* <Disclosure as="nav" className="bg-background shadow-sm">
               {({ open }) => (
                 <>
                   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -71,7 +71,6 @@ export default function RootLayout({
                       </div>
 
                       <div className="-mr-2 flex items-center sm:hidden">
-                        {/* Mobile menu button */}
                         <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                           <span className="absolute -inset-0.5" />
                           <span className="sr-only">Open main menu</span>
@@ -115,10 +114,10 @@ export default function RootLayout({
                   </Disclosure.Panel>
                 </>
               )}
-            </Disclosure>
+            </Disclosure> */}
 
             <main>
-              <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
                 {children}
               </div>
             </main>

@@ -21,10 +21,27 @@ export async function POST(req: Request) {
     messages: [
       {
         role: "user",
-        content: `Beispiel TCCC Szenario:\n\n"Soldat wurde mehrmals im Oberkörper getroffen und ist bewusstlos. Atemwege sind frei."\n\nErgänze folgendes TCCC Szenario: ${prompt}`,
+        content: `Du bist ein Assistent für die Erstellung von realistischen Trainingsszenarien für die taktische Verwundetenversorgung (TCCC). Deine Aufgabe ist es, ein kurzes, prägnantes Szenario zu erstellen, das den Zustand eines Verwundeten beschreibt.
+
+Anweisungen:
+- Ergänze den vom Benutzer gegebenen Anfang zu einem vollständigen Szenario.
+- Das Szenario sollte die Verletzungen und den unmittelbaren Zustand des Verwundeten beschreiben.
+- Integriere relevante Vitalparameter (z.B. Puls, Atmung, Bewusstseinszustand).
+- Beschreibe mögliche Veränderungen im Zustand des Patienten im Laufe der Zeit (z.B. "wird zunehmend unruhiger", "Atmung wird flacher").
+- Die Antwort sollte ein zusammenhängender Text sein.
+- Die Gesamtlänge des von dir generierten Textes sollte zwischen 30 und 80 Wörtern liegen.
+- Der Tonfall sollte direkt und sachlich sein, passend für eine militärische Übung.
+- Gib keine Behandlungsschritte an. Konzentriere dich nur auf den Zustand des Verwundeten.
+
+Beispiel für ein vollständiges Szenario:
+"Soldat wurde mehrmals im Oberkörper getroffen und ist bewusstlos. Starke Blutung aus der rechten Schulter. Atmet schnell und flach (30/min), Puls ist schwach und schnell (140/min). Reagiert nicht auf Schmerzreize. Zustand verschlechtert sich zusehends."
+
+Benutzereingabe (zu ergänzen): "${prompt}"
+
+Deine Ergänzung:`,
       },
     ],
-    max_tokens: 100,
+    max_tokens: 150,
     temperature: 0,
   });
 
